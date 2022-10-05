@@ -12,8 +12,8 @@ pendown()
 color("yellow")
 begin_fill()
 for i in range(4):
-  fd(400)
-  circle(50, 90)
+    fd(400)
+    circle(50, 90)
 end_fill()
 
 penup()
@@ -23,8 +23,8 @@ lt(45)
 color("#4FCCFE")
 begin_fill()
 for i in range(4):
-  fd(200)
-  circle(20, 90)
+    fd(200)
+    circle(20, 90)
 end_fill()
 
 # Triangle
@@ -67,3 +67,7 @@ for i in range(n):
     dot()
     left(360/n*m)
 end_fill()
+
+penup()
+
+done()
