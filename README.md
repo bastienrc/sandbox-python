@@ -23,7 +23,7 @@ docker run -u=$(id -u $USER):$(id -g $USER) \
   /bin/bash
 ```
 
-## Dans le container, je lance mon script sans probleme
+## Dans le container, je lance mon script sans probleme
 
 ```sh
 I have no name!@8d9cbfe12b16:/$ python app/main.py
