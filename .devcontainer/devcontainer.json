@@ -18,6 +18,13 @@
 	"customizations": {
 		// Configure properties specific to VS Code.
 		"vscode": {
+			"settings": {
+				"[python]": {
+					"editor.defaultFormatter": "ms-python.autopep8",
+					"editor.formatOnSave": true
+				},
+				"python.formatting.provider": "autopep8"
+			},
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
 				"ms-python.python",
@@ -27,7 +34,8 @@
 				"lamartire.git-indicators",
 				"waderyan.gitblame",
 				"donjayamanne.githistory",
-				"ahmadawais.emoji-log-vscode"
+				"ahmadawais.emoji-log-vscode",
+				"ms-python.autopep8"
 			]
 		}
 	}
