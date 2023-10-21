@@ -13,6 +13,7 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "pip3 install --user -r requirements.txt",
+	"postCreateCommand": "pip3 install requests beautifulsoup4",
 
 	// Configure tool-specific properties.
 	"customizations": {
@@ -35,7 +36,9 @@
 				"waderyan.gitblame",
 				"donjayamanne.githistory",
 				"ahmadawais.emoji-log-vscode",
-				"ms-python.autopep8"
+				"ms-python.autopep8",
+				"mechatroner.rainbow-csv",
+				"ritwickdey.LiveServer"
 			]
 		}
 	}
