@@ -21,8 +21,18 @@ print(line)
 quotes = []
 for quote in soup.find_all("div", class_="quote"):
     text = quote.find_all("span", class_="text")[0].text
-    author = quote.find_all("small", class_="author")[0].text
+    author = quote.find_all("small", class_="author")[0].get_text()
+    # .text version abrégé de .get_text()
     # tags = quote.find_all("div", class_="tags").text
+    # print(f'{text} by {author}')
+    quotes.append([text, author])
 
-    print(f'{text} by {author}')
-    # quotes.append(text)
+
+# On enregistre dans un fichier csv
+with open(f'{os.path.dirname(__file__)}/{title}.csv', mode='w', newline='') as file:
+    fieldnames = ['text', 'author']
+    writer = csv.writer(file)
+    writer.writerow(fieldnames)
+    for quote in quotes:
+        writer.writerow(quote)
+
