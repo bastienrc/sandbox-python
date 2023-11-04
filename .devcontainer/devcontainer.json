@@ -24,7 +24,8 @@
 					"editor.defaultFormatter": "ms-python.autopep8",
 					"editor.formatOnSave": true
 				},
-				"python.formatting.provider": "autopep8"
+				"python.formatting.provider": "autopep8",
+				"editor.tabSize": 4
 			},
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
