@@ -11,17 +11,17 @@ page = reponse.content
 soup = BeautifulSoup(page, "html.parser")
 
 title = soup.title.string
-print(title)
+# print(title)
 
-line = ''
-for i in range(len(title)):
-    line += '-'
-print(line)
+# line = ''
+# for i in range(len(title)):
+#     line += '-'
+# print(line)
 
 quotes = []
 for quote in soup.find_all("div", class_="quote"):
-    text = quote.find_all("span", class_="text")[0].text
-    author = quote.find_all("small", class_="author")[0].get_text()
+    text = quote.find("span", class_="text").text
+    author = quote.find("small", class_="author").text
     # .text version abrégé de .get_text()
     # tags = quote.find_all("div", class_="tags").text
     # print(f'{text} by {author}')
