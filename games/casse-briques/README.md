@@ -11,3 +11,4 @@ pip install pygame
 ## Ressources
 
 - [Un casse brique en Python® - Episode 1](https://www.youtube.com/watch?v=YL3pdhxhcp0) par Informatique Sans Complexe
+- [Un casse brique en Python® - Episode 2](https://www.youtube.com/watch?v=nUu70irlnzQ) par Informatique Sans Complexe
