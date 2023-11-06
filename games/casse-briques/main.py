@@ -1,4 +1,5 @@
 import pygame
+from math import cos, sin, radians
 
 config = {
     "screen_width":  600,
@@ -6,7 +7,9 @@ config = {
     "racket_width":   80,
     "racket_height":  10,
     "step_move_racket": 25,
-    "ball_diameter": 20
+    "ball_diameter": 20,
+    "step_move_ball": 20,
+    "shooting_angle": 50
 }
 
 
@@ -18,12 +21,21 @@ class Ball(pygame.sprite.Sprite):
         self.surf.fill((255, 0, 0))
         self.rect = self.surf.get_rect()
         self.stick = True
+        self.moving_x = config["step_move_ball"] * cos(radians(config["shooting_angle"]))
+        self.moving_y = - config["step_move_ball"] * sin (radians(config["shooting_angle"]))
         self.init_position()
 
     def init_position(self):
         self.rect.x = my_racket.rect.x + \
             config["racket_width"] / 2 - config["ball_diameter"] / 2
         self.rect.y = my_racket.rect.y - config["racket_height"] * 2
+
+    def update(self, pressed_keys):
+        if pressed_keys[pygame.K_SPACE]:
+            self.stick = False
+        if not self.stick:
+            self.rect.x += self.moving_x
+            self.rect.y += self.moving_y
 
 
 class Racket(pygame.sprite.Sprite):
