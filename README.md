@@ -2,6 +2,11 @@
 
 Bac à sable pour s'amuser avec Python en utilisant « Dev Container ».
 
+## Jeux
+
+- Morpion (TKinter)
+- Casse-briques (PyGame)
+- Pendu (TKinter+Turtle)
 
 ## Mes scripts
 
@@ -11,15 +16,9 @@ python scripts/csv2json.py
 python scripts/scrapping/main.py # Scrapping
 ```
 
-## Tests GUI
-
-```sh
-python gui/hello.py # J'affiche « Hellooooo » dans une boite de dialogue « tkinter ».
-python gui/turtleTest.py # Je dessine un truc moche avec « Turtle ».
-```
-
 ## Ressources
 
 - [Articles Python sur freeCodeCamp.org](https://www.freecodecamp.org/news/tag/python)
 - [Le guide de l’auto-stoppeur pour Python!](https://python-guide-fr.readthedocs.io/fr/latest)
 - [Python Doctor](https://python.doctor)
+- [OpenClassrooms - Apprenez les bases du langage Python](https://openclassrooms.com/fr/courses/7168871-apprenez-les-bases-du-langage-python)
