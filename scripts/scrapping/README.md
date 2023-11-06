@@ -33,4 +33,6 @@ pip install selenium
 ## Webographie
 
 - [OpenClassrooms - Apprenez les bases du langage Python > Extrayez et transformez des données avec l’extraction web](https://openclassrooms.com/fr/courses/7168871-apprenez-les-bases-du-langage-python/7296776-extrayez-et-transformez-des-donnees-avec-lextraction-web)
-- [Le web scraping avec Python : un guide pas-à-pas](https://brightdata.fr/blog/savoir-faire/web-scraping-with-python)
+- TODO: [Le web scraping avec Python : un guide pas-à-pas](https://brightdata.fr/blog/savoir-faire/web-scraping-with-python)
+- TODO: https://www.freecodecamp.org/news/use-scrapy-for-web-scraping-in-python
+
