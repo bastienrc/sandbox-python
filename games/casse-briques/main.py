@@ -17,10 +17,12 @@ class Ball(pygame.sprite.Sprite):
             [config["ball_diameter"], config["ball_diameter"]])
         self.surf.fill((255, 0, 0))
         self.rect = self.surf.get_rect()
+        self.stick = True
         self.init_position()
 
     def init_position(self):
-        self.rect.x = my_racket.rect.x + config["racket_width"] / 2 - config["ball_diameter"] / 2
+        self.rect.x = my_racket.rect.x + \
+            config["racket_width"] / 2 - config["ball_diameter"] / 2
         self.rect.y = my_racket.rect.y - config["racket_height"] * 2
 
 
@@ -37,12 +39,20 @@ class Racket(pygame.sprite.Sprite):
     def update(self, pressed_keys):
         if pressed_keys[pygame.K_LEFT]:
             self.rect.move_ip(- config["step_move_racket"], 0)
+            if my_ball.stick:
+                my_ball.rect.move_ip(- config["step_move_racket"], 0)
         if pressed_keys[pygame.K_RIGHT]:
             self.rect.move_ip(config["step_move_racket"], 0)
+            if my_ball.stick:
+                my_ball.rect.move_ip(config["step_move_racket"], 0)
         if self.rect.left < 0:
             self.rect.left = 0
+            if my_ball.stick:
+                my_ball.rect.left = config["racket_width"] / 2 - config["ball_diameter"] / 2
         if self.rect.right > config["screen_width"]:
             self.rect.right = config["screen_width"]
+            if my_ball.stick:
+                my_ball.rect.right = config["screen_width"] - config["racket_width"] / 2 + config["ball_diameter"] / 2
 
 
 pygame.init()
