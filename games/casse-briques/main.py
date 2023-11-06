@@ -40,6 +40,9 @@ class Ball(pygame.sprite.Sprite):
         if self.rect.y > SCREEN_HEIGHT:
             self.init_position()
 
+    def bounce_racket(self):
+        self.moving_y = - self.moving_y
+
 
 class Racket(pygame.sprite.Sprite):
     def __init__(self):
@@ -77,6 +80,8 @@ running = True
 
 all_sprites = pygame.sprite.Group()
 my_racket = Racket()
+group_racket = pygame.sprite.Group()
+group_racket.add(my_racket)
 all_sprites.add(my_racket)
 
 my_ball = Ball()
@@ -88,6 +93,9 @@ while running:
             running = False
 
     screen.fill("black")
+
+    if pygame.sprite.spritecollideany(my_ball, group_racket):
+        my_ball.bounce_racket()
 
     keys = pygame.key.get_pressed()
 
