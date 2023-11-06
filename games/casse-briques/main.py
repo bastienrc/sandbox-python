@@ -1,36 +1,31 @@
 import pygame
 from math import cos, sin, radians
 
-config = {
-    "screen_width":  600,
-    "screen_height": 600,
-    "racket_width":   80,
-    "racket_height":  10,
-    "step_move_racket": 25,
-    "ball_diameter": 20,
-    "step_move_ball": 20,
-    "shooting_angle": 50
-}
+
+SCREEN_WIDTH     = 600
+SCREEN_HEIGHT    = 600
+RACKET_WIDTH     = 80
+RACKET_HEIGHT    = 10
+STEP_MOVE_RACKET = 25
+BALL_DIAMETER    = 20
+STEP_MOVE_BALL   = 20
+SHOOTING_ANGLE   = 50
 
 
 class Ball(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.surf = pygame.Surface(
-            [config["ball_diameter"], config["ball_diameter"]])
+        self.surf = pygame.Surface([BALL_DIAMETER, BALL_DIAMETER])
         self.surf.fill((255, 0, 0))
         self.rect = self.surf.get_rect()
         self.stick = True
-        self.moving_x = config["step_move_ball"] * \
-            cos(radians(config["shooting_angle"]))
-        self.moving_y = - config["step_move_ball"] * \
-            sin(radians(config["shooting_angle"]))
+        self.moving_x = STEP_MOVE_BALL * cos(radians(SHOOTING_ANGLE))
+        self.moving_y = - STEP_MOVE_BALL * sin(radians(SHOOTING_ANGLE))
         self.init_position()
 
     def init_position(self):
-        self.rect.x = my_racket.rect.x + \
-            config["racket_width"] / 2 - config["ball_diameter"] / 2
-        self.rect.y = my_racket.rect.y - config["racket_height"] * 2
+        self.rect.x = my_racket.rect.x + RACKET_WIDTH / 2 - BALL_DIAMETER / 2
+        self.rect.y = my_racket.rect.y - RACKET_HEIGHT * 2
 
     def update(self, pressed_keys):
         if pressed_keys[pygame.K_SPACE]:
@@ -40,47 +35,43 @@ class Ball(pygame.sprite.Sprite):
             self.rect.y += self.moving_y
         if self.rect.y < 0:
             self.moving_y = - self.moving_y
-        if self.rect.x < 0 or self.rect.x > config["screen_width"] - config["ball_diameter"] / 2:
+        if self.rect.x < 0 or self.rect.x > SCREEN_WIDTH - BALL_DIAMETER / 2:
             self.moving_x = - self.moving_x
-        if self.rect.y > config["screen_height"]:
+        if self.rect.y > SCREEN_HEIGHT:
             self.init_position()
 
 
 class Racket(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.surf = pygame.Surface(
-            [config["racket_width"], config["racket_height"]])
+        self.surf = pygame.Surface([RACKET_WIDTH, RACKET_HEIGHT])
         self.surf.fill((0, 255, 0))
         self.rect = self.surf.get_rect()
-        self.rect.x = config["screen_width"] / 2 - config["racket_width"] / 2
-        self.rect.y = config["screen_height"] - 2 * config["racket_height"]
+        self.rect.x = SCREEN_WIDTH / 2 - RACKET_WIDTH / 2
+        self.rect.y = SCREEN_HEIGHT - 2 * RACKET_HEIGHT
 
     def update(self, pressed_keys):
         if pressed_keys[pygame.K_LEFT]:
-            self.rect.move_ip(- config["step_move_racket"], 0)
+            self.rect.move_ip(- STEP_MOVE_RACKET, 0)
             if my_ball.stick:
-                my_ball.rect.move_ip(- config["step_move_racket"], 0)
+                my_ball.rect.move_ip(- STEP_MOVE_RACKET, 0)
         if pressed_keys[pygame.K_RIGHT]:
-            self.rect.move_ip(config["step_move_racket"], 0)
+            self.rect.move_ip(STEP_MOVE_RACKET, 0)
             if my_ball.stick:
-                my_ball.rect.move_ip(config["step_move_racket"], 0)
+                my_ball.rect.move_ip(STEP_MOVE_RACKET, 0)
         if self.rect.left < 0:
             self.rect.left = 0
             if my_ball.stick:
-                my_ball.rect.left = config["racket_width"] / \
-                    2 - config["ball_diameter"] / 2
-        if self.rect.right > config["screen_width"]:
-            self.rect.right = config["screen_width"]
+                my_ball.rect.left = RACKET_WIDTH / 2 - BALL_DIAMETER / 2
+        if self.rect.right > SCREEN_WIDTH:
+            self.rect.right = SCREEN_WIDTH
             if my_ball.stick:
-                my_ball.rect.right = config["screen_width"] - \
-                    config["racket_width"] / 2 + config["ball_diameter"] / 2
+                my_ball.rect.right = SCREEN_WIDTH - RACKET_WIDTH / 2 + BALL_DIAMETER / 2
 
 
 pygame.init()
 pygame.display.set_caption("Casse Briques Alpha-0.0.1")
-screen = pygame.display.set_mode(
-    [config["screen_width"], config["screen_height"]])
+screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 clock = pygame.time.Clock()
 running = True
 
