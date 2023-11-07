@@ -49,6 +49,12 @@ class Ball(pygame.sprite.Sprite):
     def bounce_racket(self):
         self.moving_y = - self.moving_y
 
+    def inverse_x(self):
+        self.moving_x = - self.moving_x
+
+    def inverse_y(self):
+        self.moving_y = - self.moving_y
+
 
 class Racket(pygame.sprite.Sprite):
     def __init__(self):
@@ -95,6 +101,7 @@ class Brick(pygame.sprite.Sprite):
             for i in range(BRICK_PER_ROW):
                 brick = Brick(x, y)
                 all_sprites.add(brick)
+                brick_group.add(brick)
                 x = BRICK_MARGIN + (BRICK_WIDTH + BRICK_GAP) * (i+1)
             y = BRICK_MARGIN + (BRICK_HEIGHT + BRICK_GAP) * (j+1)
 
@@ -114,6 +121,7 @@ all_sprites.add(my_racket)
 my_ball = Ball()
 all_sprites.add(my_ball)
 
+brick_group = pygame.sprite.Group()
 Brick.init_brick_wall()
 
 while running:
@@ -125,6 +133,20 @@ while running:
 
     if pygame.sprite.spritecollideany(my_ball, group_racket):
         my_ball.bounce_racket()
+
+    bricks_destroy = pygame.sprite.spritecollide(my_ball, brick_group, True)
+    for brick in bricks_destroy:
+        relative_x = my_ball.rect.x - brick.rect.x
+        relative_y = my_ball.rect.y - brick.rect.y
+        if relative_x > 0 and relative_y > 0 :
+            my_ball.inverse_y()
+        if relative_x > 0 > relative_y:
+            my_ball. inverse_y()
+        if relative_x < 0 < relative_y:
+            my_ball.inverse_x()
+        if relative_x > 0 > relative_y:
+            my_ball.inverse_x()
+
 
     keys = pygame.key.get_pressed()
 
