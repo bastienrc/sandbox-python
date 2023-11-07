@@ -2,14 +2,20 @@ import pygame
 from math import cos, sin, radians
 
 
-SCREEN_WIDTH     = 600
-SCREEN_HEIGHT    = 600
-RACKET_WIDTH     = 80
-RACKET_HEIGHT    = 10
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+RACKET_WIDTH = 80
+RACKET_HEIGHT = 10
 STEP_MOVE_RACKET = 25
-BALL_DIAMETER    = 20
-STEP_MOVE_BALL   = 20
-SHOOTING_ANGLE   = 50
+BALL_DIAMETER = 20
+STEP_MOVE_BALL = 20
+SHOOTING_ANGLE = 50
+BRICK_WIDTH = 50
+BRICK_HEIGHT = 25
+BRICK_GAP = 20
+BRICK_MARGIN = 20
+BRICK_PER_ROW = 11
+BRICK_PER_COLUMN = 4
 
 
 class Ball(pygame.sprite.Sprite):
@@ -18,12 +24,12 @@ class Ball(pygame.sprite.Sprite):
         self.surf = pygame.Surface([BALL_DIAMETER, BALL_DIAMETER])
         self.surf.fill((255, 0, 0))
         self.rect = self.surf.get_rect()
-        self.stick = True
         self.moving_x = STEP_MOVE_BALL * cos(radians(SHOOTING_ANGLE))
         self.moving_y = - STEP_MOVE_BALL * sin(radians(SHOOTING_ANGLE))
         self.init_position()
 
     def init_position(self):
+        self.stick = True
         self.rect.x = my_racket.rect.x + RACKET_WIDTH / 2 - BALL_DIAMETER / 2
         self.rect.y = my_racket.rect.y - RACKET_HEIGHT * 2
 
@@ -72,6 +78,27 @@ class Racket(pygame.sprite.Sprite):
                 my_ball.rect.right = SCREEN_WIDTH - RACKET_WIDTH / 2 + BALL_DIAMETER / 2
 
 
+class Brick(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.surf = pygame.Surface([BRICK_WIDTH, BRICK_HEIGHT])
+        self.surf.fill((0, 0, 255))
+        self.rect = self.surf.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+    @staticmethod
+    def init_brick_wall():
+        y = BRICK_MARGIN
+        for j in range(BRICK_PER_COLUMN):
+            x = BRICK_MARGIN
+            for i in range(BRICK_PER_ROW):
+                brick = Brick(x, y)
+                all_sprites.add(brick)
+                x = BRICK_MARGIN + (BRICK_WIDTH + BRICK_GAP) * (i+1)
+            y = BRICK_MARGIN + (BRICK_HEIGHT + BRICK_GAP) * (j+1)
+
+
 pygame.init()
 pygame.display.set_caption("Casse Briques Alpha-0.0.1")
 screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
@@ -86,6 +113,8 @@ all_sprites.add(my_racket)
 
 my_ball = Ball()
 all_sprites.add(my_ball)
+
+Brick.init_brick_wall()
 
 while running:
     for event in pygame.event.get():
