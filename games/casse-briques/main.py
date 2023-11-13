@@ -2,7 +2,6 @@ import pygame
 import os
 from math import cos, sin, radians
 
-
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 750
 
@@ -24,6 +23,8 @@ BRICK_PER_ROW = 11
 BRICK_PER_COLUMN = 4
 
 LIFE_NUMBER_START = 3
+
+game_over = False
 
 pygame.font.init()
 POLICE = pygame.font.Font(
@@ -73,6 +74,10 @@ class Ball(pygame.sprite.Sprite):
 
     def inverse_y(self):
         self.moving_y = - self.moving_y
+
+    def reset(self):
+        self.init_position()
+        self.life_number = LIFE_NUMBER_START
 
 
 class Racket(pygame.sprite.Sprite):
@@ -127,6 +132,12 @@ class Brick(pygame.sprite.Sprite):
                 x = BRICK_MARGIN + (BRICK_WIDTH + BRICK_GAP) * (i+1)
             y = BRICK_MARGIN + (BRICK_HEIGHT + BRICK_GAP) * (j+1)
 
+    @staticmethod
+    def reset():
+        for brick in brick_group:
+            brick.kill()
+        Brick.init_brick_wall()
+
 
 class Score(pygame.sprite.Sprite):
     def __init__(self):
@@ -167,6 +178,22 @@ class LivesRemaining(pygame.sprite.Sprite):
         self._setText()
 
 
+class GameOver(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self._setText()
+
+    def _setText(self):
+        self.surf = POLICE.render("GAME OVER", True, (150, 150, 150))
+        self.surf = POLICE.render("(S pour recommencer)", True, (150, 150, 150))
+        self.rect = self.surf.get_rect(
+            center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+        )
+
+    def update(self, pressed_keys):
+        self._setText()
+
+
 pygame.init()
 pygame.display.set_caption("Casse Briques Alpha-0.0.1")
 screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
@@ -184,6 +211,8 @@ all_sprites.add(my_ball)
 
 my_score = Score()
 all_sprites.add(my_score)
+
+text_game_over = GameOver()
 
 all_sprites.add(LivesRemaining())
 
@@ -216,8 +245,22 @@ while running:
 
     keys = pygame.key.get_pressed()
 
-    for my_sprite in all_sprites:
-        my_sprite.update(keys)
+    if my_ball.life_number <=0:
+        game_over = True
+
+    if not game_over:
+        for my_sprite in all_sprites:
+            my_sprite.update(keys)
+    else:
+        all_sprites.add(text_game_over)
+
+    if game_over and keys[pygame.K_s]:
+        game_over = False
+        my_ball.reset()
+        my_score.reset()
+        Brick.reset()
+        text_game_over.kill()
+        text_game_over = GameOver()
 
     for my_sprite in all_sprites:
         screen.blit(my_sprite.surf, my_sprite.rect)
