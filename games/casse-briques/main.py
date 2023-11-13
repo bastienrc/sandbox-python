@@ -1,15 +1,21 @@
 import pygame
+import os
 from math import cos, sin, radians
 
 
 SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_HEIGHT = 750
+
 RACKET_WIDTH = 80
 RACKET_HEIGHT = 10
-STEP_MOVE_RACKET = 25
+RACKET_STEP_MOVE = 25
+RACKET_ALTITUDE = 150
+
 BALL_DIAMETER = 20
-STEP_MOVE_BALL = 20
+BALL_STEP_MOVE = 20
+
 SHOOTING_ANGLE = 50
+
 BRICK_WIDTH = 50
 BRICK_HEIGHT = 25
 BRICK_GAP = 20
@@ -21,11 +27,14 @@ BRICK_PER_COLUMN = 4
 class Ball(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.surf = pygame.Surface([BALL_DIAMETER, BALL_DIAMETER])
-        self.surf.fill((255, 0, 0))
+        # self.surf = pygame.Surface([BALL_DIAMETER, BALL_DIAMETER])
+        # self.surf.fill((255, 0, 0))
+        self.surf = pygame.image.load(
+            f'{os.path.dirname(__file__)}/assets/ball.png').convert()
+        self.surf.set_colorkey((255, 255, 255), pygame.RLEACCEL)
         self.rect = self.surf.get_rect()
-        self.moving_x = STEP_MOVE_BALL * cos(radians(SHOOTING_ANGLE))
-        self.moving_y = - STEP_MOVE_BALL * sin(radians(SHOOTING_ANGLE))
+        self.moving_x = BALL_STEP_MOVE * cos(radians(SHOOTING_ANGLE))
+        self.moving_y = - BALL_STEP_MOVE * sin(radians(SHOOTING_ANGLE))
         self.init_position()
 
     def init_position(self):
@@ -63,17 +72,17 @@ class Racket(pygame.sprite.Sprite):
         self.surf.fill((0, 255, 0))
         self.rect = self.surf.get_rect()
         self.rect.x = SCREEN_WIDTH / 2 - RACKET_WIDTH / 2
-        self.rect.y = SCREEN_HEIGHT - 2 * RACKET_HEIGHT
+        self.rect.y = SCREEN_HEIGHT - 2 * RACKET_HEIGHT - RACKET_ALTITUDE
 
     def update(self, pressed_keys):
         if pressed_keys[pygame.K_LEFT]:
-            self.rect.move_ip(- STEP_MOVE_RACKET, 0)
+            self.rect.move_ip(- RACKET_STEP_MOVE, 0)
             if my_ball.stick:
-                my_ball.rect.move_ip(- STEP_MOVE_RACKET, 0)
+                my_ball.rect.move_ip(- RACKET_STEP_MOVE, 0)
         if pressed_keys[pygame.K_RIGHT]:
-            self.rect.move_ip(STEP_MOVE_RACKET, 0)
+            self.rect.move_ip(RACKET_STEP_MOVE, 0)
             if my_ball.stick:
-                my_ball.rect.move_ip(STEP_MOVE_RACKET, 0)
+                my_ball.rect.move_ip(RACKET_STEP_MOVE, 0)
         if self.rect.left < 0:
             self.rect.left = 0
             if my_ball.stick:
@@ -87,8 +96,11 @@ class Racket(pygame.sprite.Sprite):
 class Brick(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.surf = pygame.Surface([BRICK_WIDTH, BRICK_HEIGHT])
-        self.surf.fill((0, 0, 255))
+        # self.surf = pygame.Surface([BRICK_WIDTH, BRICK_HEIGHT])
+        # self.surf.fill((0, 0, 255))
+        self.surf = pygame.image.load(
+            f'{os.path.dirname(__file__)}/assets/brick.png').convert()
+        self.surf.set_colorkey((255, 255, 255), pygame.RLEACCEL)
         self.rect = self.surf.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -129,7 +141,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    screen.fill("black")
+    screen.fill((42, 42, 42))
 
     if pygame.sprite.spritecollideany(my_ball, group_racket):
         my_ball.bounce_racket()
@@ -138,7 +150,7 @@ while running:
     for brick in bricks_destroy:
         relative_x = my_ball.rect.x - brick.rect.x
         relative_y = my_ball.rect.y - brick.rect.y
-        if relative_x > 0 and relative_y > 0 :
+        if relative_x > 0 and relative_y > 0:
             my_ball.inverse_y()
         if relative_x > 0 > relative_y:
             my_ball. inverse_y()
@@ -146,7 +158,6 @@ while running:
             my_ball.inverse_x()
         if relative_x > 0 > relative_y:
             my_ball.inverse_x()
-
 
     keys = pygame.key.get_pressed()
 
