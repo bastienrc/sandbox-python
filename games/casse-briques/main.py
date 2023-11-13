@@ -23,6 +23,11 @@ BRICK_MARGIN = 20
 BRICK_PER_ROW = 11
 BRICK_PER_COLUMN = 4
 
+pygame.font.init()
+POLICE = pygame.font.Font(
+    f'{os.path.dirname(__file__)}/assets/zorque.regular.otf',
+    42
+)
 
 class Ball(pygame.sprite.Sprite):
     def __init__(self):
@@ -118,6 +123,28 @@ class Brick(pygame.sprite.Sprite):
             y = BRICK_MARGIN + (BRICK_HEIGHT + BRICK_GAP) * (j+1)
 
 
+class Score(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.scoreCurrent = 0
+        self._setText()
+
+    def _setText(self):
+        self.surf = POLICE.render(
+            f"Score: {self.scoreCurrent}", True, (150, 150, 150))
+        self.rect = self.surf.get_rect(
+            center=(SCREEN_WIDTH - 200, SCREEN_HEIGHT - RACKET_ALTITUDE / 2))
+
+    def reset(self):
+        self.scoreCurrent = 0
+
+    def update(self, pressed_keys) -> None:
+        self._setText()
+
+    def increment(self, value):
+        self.scoreCurrent += value
+
+
 pygame.init()
 pygame.display.set_caption("Casse Briques Alpha-0.0.1")
 screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
@@ -132,6 +159,9 @@ all_sprites.add(my_racket)
 
 my_ball = Ball()
 all_sprites.add(my_ball)
+
+my_score = Score()
+all_sprites.add(my_score)
 
 brick_group = pygame.sprite.Group()
 Brick.init_brick_wall()
@@ -148,6 +178,7 @@ while running:
 
     bricks_destroy = pygame.sprite.spritecollide(my_ball, brick_group, True)
     for brick in bricks_destroy:
+        my_score.increment(10)
         relative_x = my_ball.rect.x - brick.rect.x
         relative_y = my_ball.rect.y - brick.rect.y
         if relative_x > 0 and relative_y > 0:
