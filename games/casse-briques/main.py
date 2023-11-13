@@ -23,11 +23,14 @@ BRICK_MARGIN = 20
 BRICK_PER_ROW = 11
 BRICK_PER_COLUMN = 4
 
+LIFE_NUMBER_START = 3
+
 pygame.font.init()
 POLICE = pygame.font.Font(
     f'{os.path.dirname(__file__)}/assets/zorque.regular.otf',
     42
 )
+
 
 class Ball(pygame.sprite.Sprite):
     def __init__(self):
@@ -38,6 +41,7 @@ class Ball(pygame.sprite.Sprite):
             f'{os.path.dirname(__file__)}/assets/ball.png').convert()
         self.surf.set_colorkey((255, 255, 255), pygame.RLEACCEL)
         self.rect = self.surf.get_rect()
+        self.life_number = LIFE_NUMBER_START
         self.moving_x = BALL_STEP_MOVE * cos(radians(SHOOTING_ANGLE))
         self.moving_y = - BALL_STEP_MOVE * sin(radians(SHOOTING_ANGLE))
         self.init_position()
@@ -58,6 +62,7 @@ class Ball(pygame.sprite.Sprite):
         if self.rect.x < 0 or self.rect.x > SCREEN_WIDTH - BALL_DIAMETER / 2:
             self.moving_x = - self.moving_x
         if self.rect.y > SCREEN_HEIGHT:
+            self.life_number -= 1
             self.init_position()
 
     def bounce_racket(self):
@@ -131,18 +136,35 @@ class Score(pygame.sprite.Sprite):
 
     def _setText(self):
         self.surf = POLICE.render(
-            f"Score: {self.scoreCurrent}", True, (150, 150, 150))
+            f"Score : {self.scoreCurrent}", True, (150, 150, 150))
         self.rect = self.surf.get_rect(
             center=(SCREEN_WIDTH - 200, SCREEN_HEIGHT - RACKET_ALTITUDE / 2))
 
     def reset(self):
         self.scoreCurrent = 0
 
-    def update(self, pressed_keys) -> None:
+    def update(self, pressed_keys):
         self._setText()
 
     def increment(self, value):
         self.scoreCurrent += value
+
+
+class LivesRemaining(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self._setText()
+
+    def _setText(self):
+        self.surf = POLICE.render(
+            f"Vies : {my_ball.life_number}", True, (150, 150, 150)
+        )
+        self.rect = self.surf.get_rect(
+            center=(200, SCREEN_HEIGHT - RACKET_ALTITUDE / 2)
+        )
+
+    def update(self, pressed_keys):
+        self._setText()
 
 
 pygame.init()
@@ -162,6 +184,8 @@ all_sprites.add(my_ball)
 
 my_score = Score()
 all_sprites.add(my_score)
+
+all_sprites.add(LivesRemaining())
 
 brick_group = pygame.sprite.Group()
 Brick.init_brick_wall()
