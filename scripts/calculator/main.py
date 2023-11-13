@@ -1,34 +1,10 @@
-#
-# Calculator
-#
+from modules.operations.main import *
 
-# -----------------
-# Opérations
-# -----------------
-def division(numerator, denominateur):
-    try:
-        result = numerator / denominateur
-        return result
-    except ZeroDivisionError:
-        print("Division par zéro impossible !!!")
-
-def addition(a, b):
-    return a + b
-
-def substraction(a, b):
-    return a - b
-
-def multiplication(a, b):
-    return a * b
-
-
-# -----------------
-# Main
-# -----------------
 def input_two_number():
     num1 = float(input("Entrez le premier nombre : "))
     num2 = float(input("Entrez le deuxième nombre : "))
     return num1, num2
+
 
 def menu():
     print("««« MENU »»»")
@@ -40,9 +16,11 @@ def menu():
     selection = input("Sélectionner votre opération ? (1 à 4) : ")
 
     while selection not in ["1", "2", "3", "4"]:
-        selection = input("Sélection invalide. Entrez votre selection ? (1 à 4) : ")
+        selection = input(
+            "Sélection invalide. Entrez votre selection ? (1 à 4) : ")
 
     return selection
+
 
 def calcul(selection):
     num1, num2 = input_two_number()
@@ -59,6 +37,7 @@ def calcul(selection):
             print("Selection invalide !!!")
 
     return result
+
 
 print("Bienvenue sur ma calculatrice !")
 selection = menu()

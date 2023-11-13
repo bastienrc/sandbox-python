@@ -2,11 +2,10 @@
 
 Bac à sable pour s'amuser avec Python en utilisant « Dev Container ».
 
-## Jeux
+## Jeux
 
 - Morpion (TKinter)
 - Casse-briques (PyGame)
-- Pendu (TKinter+Turtle)
 
 ## Mes scripts
 
